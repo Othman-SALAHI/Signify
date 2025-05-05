@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign. Translate. Speak</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #camera-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      background-color: black;
+      overflow: hidden;
+    }
+    #camera-feed {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    #camera-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: white;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 pt-24 px-4">
+    <header class="fixed inset-x-0 top-0 z-50 bg-white shadow">
+        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+          <div class="flex lg:flex-1">
+            <a href="#" class="-m-1.5 p-1.5">
+              <span class="sr-only"></span>
+              <img class="h-8 w-auto" src="" alt="">
+            </a>
+          </div>
+          <div class="flex lg:hidden">
+            <button type="button" id="mobile-menu-button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+              <span class="sr-only">Open main menu</span>
+              <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+          </div>
+          <div class="hidden lg:flex lg:gap-x-12">
+            <a href="#" class="text-sm/6 font-semibold text-gray-900">Product</a>
+            <a href="#" class="text-sm/6 font-semibold text-gray-900">Features</a>
+          </div>
+        </nav>
+        
+        <div id="mobile-menu" class="hidden lg:hidden" role="dialog" aria-modal="true">
+         
+          <div class="fixed inset-0 z-50 bg-black bg-opacity-50"></div>
+          <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <div class="flex items-center justify-between">
+              <a href="#" class="-m-1.5 p-1.5">
+                <span class="sr-only">Your Company</span>
+                <img class="h-8 w-auto" src="" alt="">
+              </a>
+              <button type="button" id="close-menu-button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                <span class="sr-only">Close menu</span>
+                <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="mt-6 flow-root">
+              <div class="-my-6 divide-y divide-gray-500/10">
+                <div class="space-y-2 py-6">
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Product</a>
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Features</a>
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Marketplace</a>
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Company</a>
+                </div>
+                <div class="py-6">
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log in</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+  
+    <main class="max-w-6xl mx-auto space-y-8">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Camera Section -->
+        <section class="flex-1">
+          <div class="bg-white p-6 rounded-2xl shadow-md">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Live Camera Feed</h2>
+            <div id="camera-container" class="rounded overflow-hidden mb-4">
+              <img id="camera-feed" src="" />
+              <p id="camera-placeholder">Camera is off</p>
+            </div>
+  
+            <div class="space-y-3">
+              <div class="flex justify-between bg-gray-100 p-3 rounded-lg">
+                <span class="text-gray-700 font-medium">Predicted Letter:</span>
+                <span id="predicted-letter" class="text-xl text-indigo-600 font-bold">[ ]</span>
+              </div>
+              <div class="flex justify-between bg-gray-100 p-3 rounded-lg">
+                <span class="text-gray-700 font-medium">Current Phrase:</span>
+                <span id="current-word" class="text-xl text-green-600 font-bold">[ ]</span>
+              </div>
+              <div class="flex items-center gap-4 bg-gray-100 p-3 rounded-lg">
+                <span class="text-gray-700 font-medium">Confidence:</span>
+                <div class="flex items-center w-full">
+                  <div class="w-full h-2 bg-gray-200 rounded-full mr-2">
+                    <div id="confidence-bar" class="h-2 bg-indigo-600 rounded-full" style="width: 0%"></div>
+                  </div>
+                  <span id="confidence-value" class="text-sm text-gray-600">0%</span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="mt-6 flex flex-wrap justify-center gap-3">
+              <button id="toggle-camera" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Start Camera</button>
+              <button id="toggle-processing" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700" disabled>Start Processing</button>
+              <button id="clear-word" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Clear</button>
+              <button id="text-to-speech" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">To Voice</button>
+              <button id="delete-letter" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
+            </div>
+          </div>
+        </section>
+  
+        <!-- Landmarks Section -->
+        <section class="flex-1">
+          <div class="bg-white p-6 rounded-2xl shadow-md h-full">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Hand Landmarks</h2>
+            <div class="aspect-[4/3] bg-gray-100 rounded-lg relative overflow-hidden">
+              <canvas id="hand-canvas" class="w-full h-full"></canvas>
+              <p id="canvas-placeholder" class="absolute inset-0 flex items-center justify-center text-gray-400">Processing is off</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  
+    <script src="{{ url_for('static', filename='js/heart.js') }}"></script>
+  </body>
+  
+</html>

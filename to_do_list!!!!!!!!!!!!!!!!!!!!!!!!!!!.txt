@@ -1,0 +1,5 @@
+insert logos
+fix routing in nav 
+remove login button
+few styling tweaks
+good Luck!!!!!!!!
