@@ -1,7 +1,0 @@
-tensorflow
-flask
-flask-cors
-opencv-python
-mediapipe
-numpy
-gTTS
